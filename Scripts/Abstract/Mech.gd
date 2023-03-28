@@ -30,8 +30,9 @@ func printHealth():
 	print("Health is %s" % mechHealth)
 
 func printParts():
-	for _part in mechParts:
-		print(_part)
+	# for key print out the name of the part in the value
+	for _partKey in mechParts:
+		print(mechParts[_partKey].partName)
 		
 
 # virtual methods that are overwritten by subclasses
