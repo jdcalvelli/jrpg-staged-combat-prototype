@@ -12,6 +12,7 @@ var mechHealth: int
 # mech parts object
 # probably a more type-safe way to do this
 var mechParts = {}
+var mechElements = {}
 
 # constructor
 func _init(_mechHealth: int, _mechParts: Dictionary):
