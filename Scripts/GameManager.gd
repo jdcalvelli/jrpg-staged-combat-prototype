@@ -6,10 +6,8 @@ var _playerMech: PlayerMech
 var _enemyMech: EnemyMech
 var _playerText: RichTextLabel
 
-var attackButton: Button
+var _attackButton: Button
 
-#State Machine, TBD
-#enum States {Round_Start, Player_Select, Player_Target, Enemy_Select, Enemy_Target, Damage_Calc}
 
 # Called when the node enters the scene tree for the first time.
 # this is start
@@ -29,16 +27,15 @@ func _ready():
 		}
 	)
 	
+	#Player Stats Display
 	_playerText.text = ("Total Health is %s" % _playerMech.mechHealth) \
-	+ ("\nLeft Arm Health: %s" % _playerMech.mechHealth) \
-	+ ("\nRight Arm Health: %s" % _playerMech.mechHealth) \
-	+ ("\nLeft Leg Health: %s" % _playerMech.mechHealth) \
-	+ ("\nRight Leg Health: %s") % _playerMech.mechHealth
+		+ ("\nLeft Arm Health: %s" % _playerMech.mechHealth) \
+		+ ("\nRight Arm Health: %s" % _playerMech.mechHealth) \
+		+ ("\nLeft Leg Health: %s" % _playerMech.mechHealth) \
+		+ ("\nRight Leg Health: %s") % _playerMech.mechHealth
 	
-	#Player Button Instation
-	attackButton = get_node("CommandButton") #get_node works by finding nodes in the same node tree. so in this case the command button has to be childed to the GameManager for this to work as far as I've been able to work out. 
-	_add_commands() #calls add command function. 
 		
+	#enemy Mech instantiation
 	_enemyMech = EnemyMech.new(
 		20,
 		{
@@ -49,6 +46,44 @@ func _ready():
 		}
 	)
 	
+	#Player Button Instation
+	_attackButton = get_node("CommandButton") #get_node works by finding nodes in the same node tree. so in this case the command button has to be childed to the GameManager for this to work as far as I've been able to work out. 
+	
+	_add_commands() #calls add command function. 
+	
+	_attackButton.connect("item_selected", _on_item_selected)
+	
+	#prints all the stats to make sure the parts are all being made properly
+		#_print_test()
+
+
+#Adds commands on start up for each limb on the player mech. 
+func _add_commands():
+	_attackButton.add_item("Select Part to Attack With") #adds the initial command that just says hey pick a command lol
+	
+	for _partKey in _playerMech.mechParts: #Populates the option menu with each part of the player mech. 
+		_attackButton.add_item(_playerMech.mechParts[_partKey].partName)
+	#Considerations, When a part is destroyed is it possible to remove an item?
+	#On the options button manual page there is a way to remove an item in the button based on it's index
+	#Does godot index from 0 or 1?
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+# this is update
+# not being used right now
+func _process(delta):
+	pass
+
+func _on_item_selected(id):
+	if id == 1: 
+		_playerMech.attack()
+	if id == 2:
+		pass
+	if id == 3:
+		pass
+		
+	
+
+func _print_test():
 	# just testing to make sure that instantiation worked right
 	print("player elements")
 	_playerMech.printHealth()
@@ -61,20 +96,3 @@ func _ready():
 	_enemyMech.printHealth()
 	_enemyMech.printParts()
 	_enemyMech.attack()
-	
-
-#Adds commands on start up for each limb on the player mech. 
-func _add_commands():
-	attackButton.add_item("Select Part to Attack With") #adds the initial command that just says hey pick a command lol
-	
-	for _partKey in _playerMech.mechParts: #Populates the option menu with each part of the player mech. 
-		attackButton.add_item(_playerMech.mechParts[_partKey].partName)
-	#Considerations, When a part is destroyed is it possible to remove an item?
-	#On the options button manual page there is a way to remove an item in the button based on it's index
-	#Does godot index from 0 or 1?
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-# this is update
-# not being used right now
-func _process(delta):
-	pass
