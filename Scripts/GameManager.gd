@@ -8,10 +8,14 @@ var _playerText: RichTextLabel
 
 var _attackButton: Button
 
+enum States {START, PLAYER_TURN, PLAYER_CALC, ENEMY_TURN, ENEMY_CALC, END}
+var _state: int
 
 # Called when the node enters the scene tree for the first time.
 # this is start
 func _ready():
+	
+	_change_state(States.START)
 	
 	#Player Insantiation.
 	# this is really not a good way to do this, should find a better one
@@ -62,7 +66,7 @@ func _add_commands():
 	_attackButton.add_item("Select Part to Attack With") #adds the initial command that just says hey pick a command lol
 	
 	for _partKey in _playerMech.mechParts: #Populates the option menu with each part of the player mech. 
-		_attackButton.add_item(_playerMech.mechParts[_partKey].partName)
+		_attackButton.add_item("Attack with "+ _playerMech.mechParts[_partKey].partName)
 	#Considerations, When a part is destroyed is it possible to remove an item?
 	#On the options button manual page there is a way to remove an item in the button based on it's index
 	#Does godot index from 0 or 1?
@@ -71,9 +75,12 @@ func _add_commands():
 # this is update
 # not being used right now
 func _process(delta):
+	
+	
 	pass
 
 func _on_item_selected(id):
+	
 	if id == 1: 
 		_playerMech.attack()
 	if id == 2:
@@ -96,3 +103,37 @@ func _print_test():
 	_enemyMech.printHealth()
 	_enemyMech.printParts()
 	_enemyMech.attack()
+	
+func _input(event):
+	if Input.is_action_pressed("ui_accept"):
+		_state +=1
+		if _state > 5:
+			_state = 0
+		print(_state)
+		_change_state(_state)
+	pass
+	
+	#StateMachine
+func _change_state(new_state: int):
+	_state = new_state
+	
+	match _state:
+		States.START:
+			print("Start State")
+			pass
+		States.PLAYER_TURN:
+			print("Start Player Turn")
+			pass
+		States.PLAYER_CALC:
+			print("Calculating Player Combo/Damage")
+			pass
+		States.ENEMY_TURN:
+			print("Start Enemy Turn")
+			pass
+		States.ENEMY_CALC:
+			print("Calculating Enemy Damage")
+			pass
+		States.END:
+			print("End of Combat")
+			pass
+	pass
