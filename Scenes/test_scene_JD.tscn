@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cjch45sdrovw7"]
 
-[ext_resource type="Script" path="res://Scripts/GameManager.gd" id="1_qwgyx"]
-[ext_resource type="Script" path="res://Scripts/Controllers/PlayerController.gd" id="2_hd1u4"]
+[ext_resource type="Script" path="res://Scripts/GameManager.gd" id="1_0kihf"]
+[ext_resource type="Script" path="res://Scripts/Controllers/PlayerController.gd" id="2_862sq"]
 
 [sub_resource type="GDScript" id="GDScript_r0eeu"]
 script/source = "extends OptionButton
@@ -53,7 +53,7 @@ text = "Enemy
 "
 
 [node name="GameManager" type="Node2D" parent="."]
-script = ExtResource("1_qwgyx")
+script = ExtResource("1_0kihf")
 
 [node name="CommandButton" type="OptionButton" parent="GameManager"]
 anchors_preset = 8
@@ -94,4 +94,4 @@ text = "Test
 script = SubResource("GDScript_7utf7")
 
 [node name="PlayerController" type="Node2D" parent="."]
-script = ExtResource("2_hd1u4")
+script = ExtResource("2_862sq")
