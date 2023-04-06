@@ -17,38 +17,18 @@ func _ready():
 	
 	_change_state(States.START)
 	
+	_playerMech = get_node("../PlayerController").PlayerMechModel
+	
 	#Player Insantiation.
 	# this is really not a good way to do this, should find a better one
 	_playerText = get_node("PlayerStats") #This finds us the Text node so we can update it.
-	# creates a new PlayerMech class and passes it's health and it's body parts. 
-	_playerMech = PlayerMech.new(
-		10, 
-		{
-			"leftArm": MechPart.new("Left Arm"),
-			"rightArm": MechPart.new("Right Arm"),
-			"leftLeg": MechPart.new("Left Leg"),
-			"rightLeg": MechPart.new("Right Leg"),
-		}
-	)
 	
 	#Player Stats Display
 	_playerText.text = ("Total Health is %s" % _playerMech.mechHealth) \
-		+ ("\nLeft Arm Health: %s" % _playerMech.mechHealth) \
-		+ ("\nRight Arm Health: %s" % _playerMech.mechHealth) \
-		+ ("\nLeft Leg Health: %s" % _playerMech.mechHealth) \
-		+ ("\nRight Leg Health: %s") % _playerMech.mechHealth
-	
-		
-	#enemy Mech instantiation
-	_enemyMech = EnemyMech.new(
-		20,
-		{
-			"leftArm": MechPart.new("Enemy Left Arm"),
-			"rightArm": MechPart.new("Enemy Right Arm"),
-			"leftLeg": MechPart.new("Enemy Left Leg"),
-			"rightLeg": MechPart.new("Enemy Right Leg"),
-		}
-	)
+		+ ("\nLeft Arm Health: %s" % _playerMech.mechParts["leftArm"].partHealth) \
+		+ ("\nRight Arm Health: %s" % _playerMech.mechParts["rightArm"].partHealth) \
+		+ ("\nLeft Leg Health: %s" % _playerMech.mechParts["leftLeg"].partHealth) \
+		+ ("\nRight Leg Health: %s") % _playerMech.mechParts["rightLeg"].partHealth
 	
 	#Player Button Instation
 	_attackButton = get_node("CommandButton") #get_node works by finding nodes in the same node tree. so in this case the command button has to be childed to the GameManager for this to work as far as I've been able to work out. 
@@ -76,7 +56,6 @@ func _add_commands():
 # not being used right now
 func _process(delta):
 	
-	
 	pass
 
 func _on_item_selected(id):
@@ -88,21 +67,6 @@ func _on_item_selected(id):
 	if id == 3:
 		pass
 		
-	
-
-func _print_test():
-	# just testing to make sure that instantiation worked right
-	print("player elements")
-	_playerMech.printHealth()
-	_playerMech.printParts()
-	_playerMech.attack()
-	
-	print("--------------")
-	
-	print("enemy elements")
-	_enemyMech.printHealth()
-	_enemyMech.printParts()
-	_enemyMech.attack()
 	
 func _input(event):
 	if Input.is_action_pressed("ui_accept"):

@@ -10,5 +10,5 @@ func _init(_mechHealth: int, _mechParts: Dictionary):
 	super._init(_mechHealth, _mechParts)
 
 # virtual overrides
-func attack():
-	print("player attacks")
+func Attack(part: MechPart):
+	print("you did %s damage with %s", part.partDamage, part.partName)
