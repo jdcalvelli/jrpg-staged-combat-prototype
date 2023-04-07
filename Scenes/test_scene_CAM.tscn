@@ -69,17 +69,52 @@ grow_horizontal = 2
 grow_vertical = 2
 script = SubResource("GDScript_r0eeu")
 
-[node name="DefendButton" type="Button" parent="GameManager"]
-offset_left = 29.0
+[node name="LeftArmButton" type="Button" parent="GameManager"]
+offset_left = 197.0
 offset_top = 447.0
-offset_right = 313.0
-offset_bottom = 510.0
+offset_right = 357.0
+offset_bottom = 508.0
 theme_override_font_sizes/font_size = 24
+text = "Left Arm
+"
+
+[node name="RightArmButton" type="Button" parent="GameManager"]
+offset_left = 375.0
+offset_top = 447.0
+offset_right = 535.0
+offset_bottom = 508.0
+theme_override_font_sizes/font_size = 24
+text = "Right Arm"
+
+[node name="LeftLegButton" type="Button" parent="GameManager"]
+offset_left = 553.0
+offset_top = 447.0
+offset_right = 713.0
+offset_bottom = 508.0
+theme_override_font_sizes/font_size = 24
+text = "Left Leg
+"
+
+[node name="RightLegButton" type="Button" parent="GameManager"]
+offset_left = 731.0
+offset_top = 447.0
+offset_right = 891.0
+offset_bottom = 508.0
+theme_override_font_sizes/font_size = 24
+text = "Right Leg
+"
 
 [node name="DefendButton2" type="Button" parent="GameManager"]
-offset_left = 29.0
+offset_left = 561.0
 offset_top = 537.0
-offset_right = 313.0
+offset_right = 811.0
+offset_bottom = 600.0
+theme_override_font_sizes/font_size = 24
+
+[node name="DefendButton3" type="Button" parent="GameManager"]
+offset_left = 853.0
+offset_top = 537.0
+offset_right = 1103.0
 offset_bottom = 600.0
 theme_override_font_sizes/font_size = 24
 
@@ -95,3 +130,8 @@ script = SubResource("GDScript_7utf7")
 
 [node name="PlayerController" type="Node2D" parent="."]
 script = ExtResource("2_2iocr")
+
+[connection signal="button_down" from="GameManager/LeftArmButton" to="GameManager" method="_on_left_arm_button_button_down"]
+[connection signal="button_down" from="GameManager/RightArmButton" to="GameManager" method="_on_right_arm_button_button_down"]
+[connection signal="button_down" from="GameManager/LeftLegButton" to="GameManager" method="_on_left_leg_button_button_down"]
+[connection signal="button_down" from="GameManager/RightLegButton" to="GameManager" method="_on_right_leg_button_button_down"]

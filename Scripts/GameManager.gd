@@ -11,6 +11,8 @@ var _attackButton: Button
 enum States {START, PLAYER_TURN, PLAYER_CALC, ENEMY_TURN, ENEMY_CALC, END}
 var _state: int
 
+var _actionPoints: int
+
 # Called when the node enters the scene tree for the first time.
 # this is start
 func _ready():
@@ -55,7 +57,14 @@ func _add_commands():
 # this is update
 # not being used right now
 func _process(delta):
-	
+	_transition_to_player_calc()
+	pass
+
+func _transition_to_player_calc():
+	if _state != States.PLAYER_TURN: return
+	if _actionPoints > 0: return
+	_state +=1
+	_change_state(_state)
 	pass
 
 func _on_item_selected(id):
@@ -83,7 +92,10 @@ func _change_state(new_state: int):
 	
 	match _state:
 		States.START:
+			_actionPoints = 2 #sets player action points.
 			print("Start State")
+			_state += 1
+			_change_state(_state)
 			pass
 		States.PLAYER_TURN:
 			print("Start Player Turn")
@@ -101,3 +113,25 @@ func _change_state(new_state: int):
 			print("End of Combat")
 			pass
 	pass
+
+
+func _on_left_arm_button_button_down():
+	#unless state is PLAYER_TURN;
+	if _state != States.PLAYER_TURN: return
+	_add_attack_to_queue("Left Arm")
+
+func _on_right_arm_button_button_down():
+	if _state != States.PLAYER_TURN: return
+	_add_attack_to_queue("Right Arm")
+
+func _on_left_leg_button_button_down():
+	if _state != States.PLAYER_TURN: return
+	_add_attack_to_queue("Left Leg")
+
+func _on_right_leg_button_button_down():
+	if _state != States.PLAYER_TURN: return
+	_add_attack_to_queue("Right Leg")
+
+func _add_attack_to_queue(_partname: String):
+	_actionPoints -= 1
+	print("%s is Queued" % _partname)
