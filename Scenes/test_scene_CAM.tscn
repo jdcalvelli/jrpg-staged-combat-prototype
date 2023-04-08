@@ -52,6 +52,9 @@ theme_override_font_sizes/normal_font_size = 24
 text = "Enemy
 "
 
+[node name="PlayerController" type="Node2D" parent="."]
+script = ExtResource("2_2iocr")
+
 [node name="GameManager" type="Node2D" parent="."]
 script = ExtResource("1_rfevd")
 
@@ -128,10 +131,16 @@ text = "Test
 "
 script = SubResource("GDScript_7utf7")
 
-[node name="PlayerController" type="Node2D" parent="."]
-script = ExtResource("2_2iocr")
+[node name="AttackQueue" type="RichTextLabel" parent="."]
+offset_left = 213.0
+offset_top = 551.0
+offset_right = 543.0
+offset_bottom = 591.0
+theme_override_font_sizes/normal_font_size = 15
+text = "No Parts Queued for Attack"
 
 [connection signal="button_down" from="GameManager/LeftArmButton" to="GameManager" method="_on_left_arm_button_button_down"]
+[connection signal="button_up" from="GameManager/LeftArmButton" to="GameManager" method="_on_left_arm_button_button_up"]
 [connection signal="button_down" from="GameManager/RightArmButton" to="GameManager" method="_on_right_arm_button_button_down"]
 [connection signal="button_down" from="GameManager/LeftLegButton" to="GameManager" method="_on_left_leg_button_button_down"]
 [connection signal="button_down" from="GameManager/RightLegButton" to="GameManager" method="_on_right_leg_button_button_down"]

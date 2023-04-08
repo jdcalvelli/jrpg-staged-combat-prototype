@@ -1,3 +1,5 @@
+class_name PlayerController
+
 extends Node2D
 
 # variables for player mech
@@ -16,7 +18,9 @@ var AttackSequence: Array
 func SequencePartAttack(part: MechPart):
 	# if you have the action points, add the attack to sequence
 	if ActionPoints != 0:
-		AttackSequence.append(part)
+		AttackSequence.append(part.partName)
+		print(AttackSequence.size())
+		ActionPoints -= 1
 	
 func UnsequencePartAttack(part: MechPart):
 	# if the part is in the sequence

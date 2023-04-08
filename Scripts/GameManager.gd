@@ -2,24 +2,32 @@ extends Node2D
 
 # creating
 # underscore for pseudo private
-var _playerMech: PlayerMech
-var _enemyMech: EnemyMech
-var _playerText: RichTextLabel
+var _player: PlayerController #reference to the actual player controller
+var _playerMech: PlayerMech #reference to the player mech class 
+var _enemyMech: EnemyMech #reference to the enemy mech class
+var _playerText: RichTextLabel #reference to the text for player stats
+var _attackQueueText: RichTextLabel #reference to attack queue text. 
+
 
 var _attackButton: Button
 
 enum States {START, PLAYER_TURN, PLAYER_CALC, ENEMY_TURN, ENEMY_CALC, END}
 var _state: int
 
-var _actionPoints: int
 
 # Called when the node enters the scene tree for the first time.
 # this is start
 func _ready():
 	
+	#variable instatiation
+	_playerMech = get_node("../PlayerController").PlayerMechModel
+	_player = get_node("../PlayerController")
+	_attackQueueText = get_node("../AttackQueue")
+	
+	_player.AttackSequence.clear()
 	_change_state(States.START)
 	
-	_playerMech = get_node("../PlayerController").PlayerMechModel
+	
 	
 	#Player Insantiation.
 	# this is really not a good way to do this, should find a better one
@@ -49,20 +57,14 @@ func _add_commands():
 	
 	for _partKey in _playerMech.mechParts: #Populates the option menu with each part of the player mech. 
 		_attackButton.add_item("Attack with "+ _playerMech.mechParts[_partKey].partName)
-	#Considerations, When a part is destroyed is it possible to remove an item?
-	#On the options button manual page there is a way to remove an item in the button based on it's index
-	#Does godot index from 0 or 1?
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-# this is update
-# not being used right now
 func _process(delta):
 	_transition_to_player_calc()
 	pass
 
 func _transition_to_player_calc():
 	if _state != States.PLAYER_TURN: return
-	if _actionPoints > 0: return
+	if _player.ActionPoints > 0: return
 	_state +=1
 	_change_state(_state)
 	pass
@@ -78,12 +80,12 @@ func _on_item_selected(id):
 		
 	
 func _input(event):
-	if Input.is_action_pressed("ui_accept"):
-		_state +=1
-		if _state > 5:
-			_state = 0
-		print(_state)
-		_change_state(_state)
+#	if Input.is_action_pressed("ui_accept"):
+#		_state +=1
+#		if _state > 5:
+#			_state = 0
+#		print(_state)
+#		_change_state(_state)
 	pass
 	
 	#StateMachine
@@ -92,7 +94,8 @@ func _change_state(new_state: int):
 	
 	match _state:
 		States.START:
-			_actionPoints = 2 #sets player action points.
+			_player.ActionPoints = 2 #sets player action points.
+			_player.AttackSequence.clear()
 			print("Start State")
 			_state += 1
 			_change_state(_state)
@@ -114,24 +117,38 @@ func _change_state(new_state: int):
 			pass
 	pass
 
-
+#button Presses
 func _on_left_arm_button_button_down():
 	#unless state is PLAYER_TURN;
 	if _state != States.PLAYER_TURN: return
-	_add_attack_to_queue("Left Arm")
+	_prep_attack_for_queue("Left Arm",_playerMech.mechParts["leftArm"])#adds attack to que based on the part defined.
 
 func _on_right_arm_button_button_down():
 	if _state != States.PLAYER_TURN: return
-	_add_attack_to_queue("Right Arm")
+	_prep_attack_for_queue("Right Arm", _playerMech.mechParts["rightArm"])
 
 func _on_left_leg_button_button_down():
 	if _state != States.PLAYER_TURN: return
-	_add_attack_to_queue("Left Leg")
+	_prep_attack_for_queue("Left Leg",_playerMech.mechParts["leftLeg"])
 
 func _on_right_leg_button_button_down():
 	if _state != States.PLAYER_TURN: return
-	_add_attack_to_queue("Right Leg")
+	_prep_attack_for_queue("Right Leg",_playerMech.mechParts["rightLeg"])
 
-func _add_attack_to_queue(_partname: String):
-	_actionPoints -= 1
-	print("%s is Queued" % _partname)
+func _prep_attack_for_queue(_partname: String, _part: MechPart):
+	_player.SequencePartAttack(_part)
+	_update_queue()
+	#print(_part.partName)
+	#print(_player.ActionPoints)
+	#print("%s is Queued" % _partname)
+	
+func _update_queue():
+#	print("test")
+	if _player.AttackSequence.size() <= 0: #if there are no attacks in the queue;
+		_attackQueueText.text = "No Attacks Queued"
+	if _player.AttackSequence.size() > 0 && _player.AttackSequence.size() < 2:
+		_attackQueueText.text = ("%s " % _player.AttackSequence[0]) + ("is queued")
+		print(_player.AttackSequence[0])
+	if _player.AttackSequence.size() == 2:
+		_attackQueueText.text = ("%s" % _player.AttackSequence[0]) + ("and ") + ("%s " % _player.AttackSequence[1]) + ("are queued.")
+		print(_player.AttackSequence[1])
