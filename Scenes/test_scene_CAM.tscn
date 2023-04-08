@@ -107,19 +107,21 @@ theme_override_font_sizes/font_size = 24
 text = "Right Leg
 "
 
-[node name="DefendButton2" type="Button" parent="GameManager"]
-offset_left = 561.0
-offset_top = 537.0
-offset_right = 811.0
-offset_bottom = 600.0
+[node name="ClearButton" type="Button" parent="GameManager"]
+offset_left = 743.0
+offset_top = 533.0
+offset_right = 912.0
+offset_bottom = 596.0
 theme_override_font_sizes/font_size = 24
+text = "Clear Queue"
 
-[node name="DefendButton3" type="Button" parent="GameManager"]
-offset_left = 853.0
-offset_top = 537.0
-offset_right = 1103.0
-offset_bottom = 600.0
+[node name="ConfirmAttack" type="Button" parent="GameManager"]
+offset_left = 927.0
+offset_top = 533.0
+offset_right = 1096.0
+offset_bottom = 596.0
 theme_override_font_sizes/font_size = 24
+text = "Confirm Attacks"
 
 [node name="PlayerStats" type="RichTextLabel" parent="GameManager"]
 offset_left = 32.0
@@ -133,10 +135,10 @@ script = SubResource("GDScript_7utf7")
 
 [node name="AttackQueue" type="RichTextLabel" parent="."]
 offset_left = 213.0
-offset_top = 551.0
-offset_right = 543.0
+offset_top = 542.0
+offset_right = 719.0
 offset_bottom = 591.0
-theme_override_font_sizes/normal_font_size = 15
+theme_override_font_sizes/normal_font_size = 24
 text = "No Parts Queued for Attack"
 
 [connection signal="button_down" from="GameManager/LeftArmButton" to="GameManager" method="_on_left_arm_button_button_down"]
@@ -144,3 +146,5 @@ text = "No Parts Queued for Attack"
 [connection signal="button_down" from="GameManager/RightArmButton" to="GameManager" method="_on_right_arm_button_button_down"]
 [connection signal="button_down" from="GameManager/LeftLegButton" to="GameManager" method="_on_left_leg_button_button_down"]
 [connection signal="button_down" from="GameManager/RightLegButton" to="GameManager" method="_on_right_leg_button_button_down"]
+[connection signal="button_down" from="GameManager/ClearButton" to="GameManager" method="_on_clear_button_button_down"]
+[connection signal="button_down" from="GameManager/ConfirmAttack" to="GameManager" method="_on_confirm_attack_button_down"]

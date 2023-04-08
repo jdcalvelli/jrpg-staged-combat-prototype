@@ -14,11 +14,13 @@ var PlayerMechModel: PlayerMech = PlayerMech.new(10,
 var ActionPoints: int = 2
 # sequence of actions
 var AttackSequence: Array
+var TotalDamage: Array
 
 func SequencePartAttack(part: MechPart):
 	# if you have the action points, add the attack to sequence
 	if ActionPoints != 0:
 		AttackSequence.append(part.partName)
+		TotalDamage.append(part.partDamage)
 		print(AttackSequence.size())
 		ActionPoints -= 1
 	

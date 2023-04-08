@@ -14,7 +14,7 @@ var _attackButton: Button
 enum States {START, PLAYER_TURN, PLAYER_CALC, ENEMY_TURN, ENEMY_CALC, END}
 var _state: int
 
-
+var _playerDamage: int 
 # Called when the node enters the scene tree for the first time.
 # this is start
 func _ready():
@@ -59,7 +59,7 @@ func _add_commands():
 		_attackButton.add_item("Attack with "+ _playerMech.mechParts[_partKey].partName)
 
 func _process(delta):
-	_transition_to_player_calc()
+	#_transition_to_player_calc()
 	pass
 
 func _transition_to_player_calc():
@@ -96,6 +96,7 @@ func _change_state(new_state: int):
 		States.START:
 			_player.ActionPoints = 2 #sets player action points.
 			_player.AttackSequence.clear()
+			_player.TotalDamage.clear()
 			print("Start State")
 			_state += 1
 			_change_state(_state)
@@ -105,6 +106,8 @@ func _change_state(new_state: int):
 			pass
 		States.PLAYER_CALC:
 			print("Calculating Player Combo/Damage")
+			_playerDamage = _player.TotalDamage[0] + _player.TotalDamage[1] #takes both values in damage array and adds them togehter.
+			print("player deals %s " % _playerDamage + ("damage. Combo TBD"))
 			pass
 		States.ENEMY_TURN:
 			print("Start Enemy Turn")
@@ -134,13 +137,25 @@ func _on_left_leg_button_button_down():
 func _on_right_leg_button_button_down():
 	if _state != States.PLAYER_TURN: return
 	_prep_attack_for_queue("Right Leg",_playerMech.mechParts["rightLeg"])
+	
+func _on_clear_button_button_down():
+	if _state != States.PLAYER_TURN: return
+	_player.AttackSequence.clear()
+	_player.TotalDamage.clear()
+	_player.ActionPoints = 2
+	_update_queue()
+
+#when pressing confirm button
+func _on_confirm_attack_button_down(): 
+	if _state != States.PLAYER_TURN: return
+	if _player.ActionPoints > 0: return #These checks just make sure that if the state is not player turn and action points are greater than zero we don't do anything on press. 
+	_state += 1 #ups the state count
+	_change_state(_state) #changes state to player calc state.
+
 
 func _prep_attack_for_queue(_partname: String, _part: MechPart):
 	_player.SequencePartAttack(_part)
 	_update_queue()
-	#print(_part.partName)
-	#print(_player.ActionPoints)
-	#print("%s is Queued" % _partname)
 	
 func _update_queue():
 #	print("test")
@@ -150,5 +165,10 @@ func _update_queue():
 		_attackQueueText.text = ("%s " % _player.AttackSequence[0]) + ("is queued")
 		print(_player.AttackSequence[0])
 	if _player.AttackSequence.size() == 2:
-		_attackQueueText.text = ("%s" % _player.AttackSequence[0]) + ("and ") + ("%s " % _player.AttackSequence[1]) + ("are queued.")
+		_attackQueueText.text = ("%s " % _player.AttackSequence[0]) + ("and ") + ("%s " % _player.AttackSequence[1]) + ("are queued.")
 		print(_player.AttackSequence[1])
+
+
+
+
+
