@@ -1,9 +1,9 @@
-class_name PlayerController
+class_name EnemyController
 
 extends Node2D
 
 # variables for player mech
-var PlayerMechModel: Mech = Mech.new(10,
+var EnemyMechModel: Mech = Mech.new(10,
 			{
 			"leftArm": MechPart.new("Left Arm", 5, 8),
 			"rightArm": MechPart.new("Right Arm", 5, 8),
@@ -19,19 +19,26 @@ var TotalDamage: Array
 func SequencePartAttack(part: MechPart):
 	# if you have the action points, add the attack to sequence
 	if ActionPoints != 0:
-		AttackSequence.append(part.partName)
-		TotalDamage.append(part.partDamage)
+		AttackSequence.append(part)
 		print(AttackSequence.size())
 		ActionPoints -= 1
 	
-func UnsequencePartAttack(part: MechPart):
-	# if the part is in the sequence
-	if AttackSequence.find(part) != -1:
-		# remove part from attack sequence
-		AttackSequence.pop_at(AttackSequence.find(part))
-		# increase number of action points
-		ActionPoints += 1
-	
-func ResolveAttackSequence(sequence: Array):
+func ResolveAttackSequence():
 	for part in AttackSequence:
-		PlayerMechModel.Attack(part)
+		EnemyMechModel.Attack(part)
+		
+func DetermineRandomAttackSequence():
+	
+	for n in ActionPoints:
+		match randi() % 4:
+			0:
+				SequencePartAttack(EnemyMechModel.mechParts["leftLeg"])
+			1:
+				pass
+				SequencePartAttack(EnemyMechModel.mechParts["rightLeg"])
+			2:
+				pass
+				SequencePartAttack(EnemyMechModel.mechParts["leftArm"])
+			3:
+				pass
+				SequencePartAttack(EnemyMechModel.mechParts["rightArm"])

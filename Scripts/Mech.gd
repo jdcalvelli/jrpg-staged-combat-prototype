@@ -22,20 +22,7 @@ func _init(_mechHealth: int, _mechParts: Dictionary):
 	# at construction time, we need to make sure that we give a dict
 	# with mech parts in it
 	mechParts = _mechParts
-	
-
-# class methods
-# just printing for now, test stuff
-func printHealth():
-	# string template example
-	print("Health is %s" % mechHealth)
-
-func printParts():
-	# for key print out the name of the part in the value
-	for _partKey in mechParts:
-		print(mechParts[_partKey].partName)
-		
 
 # virtual methods that are overwritten by subclasses
-func attack():
-	pass
+func Attack(part: MechPart):
+	print("you did %s damage with %s" % [part.partDamage, part.partName])

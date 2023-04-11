@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="godot-mech-rpg"
-run/main_scene="res://Scenes/test_scene_JD.tscn"
+run/main_scene="res://Scenes/test_scene_CAM.tscn"
 config/features=PackedStringArray("4.0", "GL Compatibility")
 config/icon="res://Assets/icon.svg"
 

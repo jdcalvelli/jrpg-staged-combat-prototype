@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://b1tqyridpiwdf"]
+[gd_scene load_steps=6 format=3 uid="uid://b1tqyridpiwdf"]
 
+[ext_resource type="Script" path="res://Scripts/Controllers/EnemyController.gd" id="1_fsdyp"]
 [ext_resource type="Script" path="res://Scripts/GameManager.gd" id="1_rfevd"]
 [ext_resource type="Script" path="res://Scripts/Controllers/PlayerController.gd" id="2_2iocr"]
 
@@ -51,6 +52,9 @@ offset_bottom = 68.0
 theme_override_font_sizes/normal_font_size = 24
 text = "Enemy
 "
+
+[node name="EnemyController" type="Node2D" parent="."]
+script = ExtResource("1_fsdyp")
 
 [node name="PlayerController" type="Node2D" parent="."]
 script = ExtResource("2_2iocr")
@@ -128,6 +132,16 @@ offset_left = 32.0
 offset_top = 85.0
 offset_right = 315.0
 offset_bottom = 347.0
+theme_override_font_sizes/normal_font_size = 24
+text = "Test
+"
+script = SubResource("GDScript_7utf7")
+
+[node name="EnemyStats" type="RichTextLabel" parent="GameManager"]
+offset_left = 750.0
+offset_top = 60.0
+offset_right = 1033.0
+offset_bottom = 322.0
 theme_override_font_sizes/normal_font_size = 24
 text = "Test
 "

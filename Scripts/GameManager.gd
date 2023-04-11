@@ -3,11 +3,12 @@ extends Node2D
 # creating
 # underscore for pseudo private
 var _player: PlayerController #reference to the actual player controller
-var _playerMech: PlayerMech #reference to the player mech class 
-var _enemyMech: EnemyMech #reference to the enemy mech class
+var _playerMech: Mech #reference to the player mech class 
+var _enemy: EnemyController
+var _enemyMech: Mech #reference to the enemy mech class
 var _playerText: RichTextLabel #reference to the text for player stats
 var _attackQueueText: RichTextLabel #reference to attack queue text. 
-
+var _enemyText: RichTextLabel
 
 var _attackButton: Button
 
@@ -20,8 +21,11 @@ var _playerDamage: int
 func _ready():
 	
 	#variable instatiation
-	_playerMech = get_node("../PlayerController").PlayerMechModel
 	_player = get_node("../PlayerController")
+	_playerMech = _player.PlayerMechModel
+	_enemy = get_node("../EnemyController")
+	_enemyMech = _enemy.EnemyMechModel
+	
 	_attackQueueText = get_node("../AttackQueue")
 	
 	_player.AttackSequence.clear()
@@ -32,6 +36,7 @@ func _ready():
 	#Player Insantiation.
 	# this is really not a good way to do this, should find a better one
 	_playerText = get_node("PlayerStats") #This finds us the Text node so we can update it.
+	_enemyText = get_node("EnemyStats")
 	
 	#Player Stats Display
 	_playerText.text = ("Total Health is %s" % _playerMech.mechHealth) \
@@ -39,6 +44,12 @@ func _ready():
 		+ ("\nRight Arm Health: %s" % _playerMech.mechParts["rightArm"].partHealth) \
 		+ ("\nLeft Leg Health: %s" % _playerMech.mechParts["leftLeg"].partHealth) \
 		+ ("\nRight Leg Health: %s") % _playerMech.mechParts["rightLeg"].partHealth
+		
+	_enemyText.text = ("Total Health is %s" % _enemyMech.mechHealth) \
+		+ ("\nLeft Arm Health: %s" % _enemyMech.mechParts["leftArm"].partHealth) \
+		+ ("\nRight Arm Health: %s" % _enemyMech.mechParts["rightArm"].partHealth) \
+		+ ("\nLeft Leg Health: %s" % _enemyMech.mechParts["leftLeg"].partHealth) \
+		+ ("\nRight Leg Health: %s") % _enemyMech.mechParts["rightLeg"].partHealth
 	
 	#Player Button Instation
 	_attackButton = get_node("CommandButton") #get_node works by finding nodes in the same node tree. so in this case the command button has to be childed to the GameManager for this to work as far as I've been able to work out. 
@@ -108,12 +119,17 @@ func _change_state(new_state: int):
 			print("Calculating Player Combo/Damage")
 			_playerDamage = _player.TotalDamage[0] + _player.TotalDamage[1] #takes both values in damage array and adds them togehter.
 			print("player deals %s " % _playerDamage + ("damage. Combo TBD"))
+			_change_state(States.ENEMY_TURN)
 			pass
 		States.ENEMY_TURN:
 			print("Start Enemy Turn")
+			_enemy.DetermineRandomAttackSequence()
+			_change_state(States.ENEMY_CALC)
 			pass
 		States.ENEMY_CALC:
 			print("Calculating Enemy Damage")
+			_enemy.ResolveAttackSequence()
+			_change_state(States.END)
 			pass
 		States.END:
 			print("End of Combat")
