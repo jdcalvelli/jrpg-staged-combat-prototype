@@ -24,5 +24,6 @@ func _init(_mechHealth: int, _mechParts: Dictionary):
 	mechParts = _mechParts
 
 # virtual methods that are overwritten by subclasses
-func Attack(part: MechPart):
-	print("you did %s damage with %s" % [part.partDamage, part.partName])
+func Attack(part: MechPart, tempCombatLog: RichTextLabel):
+	tempCombatLog.text += "attack did %s damage with %s \n" % [part.partDamage, part.partName]
+	print("attack did %s damage with %s" % [part.partDamage, part.partName])

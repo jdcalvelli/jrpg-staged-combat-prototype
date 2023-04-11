@@ -23,9 +23,9 @@ func SequencePartAttack(part: MechPart):
 		print(AttackSequence.size())
 		ActionPoints -= 1
 	
-func ResolveAttackSequence():
+func ResolveAttackSequence(tempCombatLog: RichTextLabel):
 	for part in AttackSequence:
-		EnemyMechModel.Attack(part)
+		EnemyMechModel.Attack(part, tempCombatLog)
 		
 func DetermineRandomAttackSequence():
 	

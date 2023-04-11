@@ -32,6 +32,6 @@ func UnsequencePartAttack(part: MechPart):
 		# increase number of action points
 		ActionPoints += 1
 	
-func ResolveAttackSequence(sequence: Array):
+func ResolveAttackSequence(tempCombatLog: RichTextLabel):
 	for part in AttackSequence:
-		PlayerMechModel.Attack(part)
+		PlayerMechModel.Attack(part, tempCombatLog)

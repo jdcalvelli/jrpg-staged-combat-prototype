@@ -1,80 +1,44 @@
-[gd_scene load_steps=6 format=3 uid="uid://b1tqyridpiwdf"]
+[gd_scene load_steps=4 format=3 uid="uid://b1tqyridpiwdf"]
 
 [ext_resource type="Script" path="res://Scripts/Controllers/EnemyController.gd" id="1_fsdyp"]
 [ext_resource type="Script" path="res://Scripts/GameManager.gd" id="1_rfevd"]
 [ext_resource type="Script" path="res://Scripts/Controllers/PlayerController.gd" id="2_2iocr"]
-
-[sub_resource type="GDScript" id="GDScript_r0eeu"]
-script/source = "extends OptionButton
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-		pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-"
-
-[sub_resource type="GDScript" id="GDScript_7utf7"]
-script/source = "extends RichTextLabel
-
-class_name PlayerStats
-
-var playerHealth: int
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-"
 
 [node name="TestScene" type="Node2D"]
 
 [node name="Player" type="RichTextLabel" parent="."]
 offset_left = 23.0
 offset_top = 25.0
-offset_right = 204.0
-offset_bottom = 68.0
+offset_right = 313.0
+offset_bottom = 65.0
 theme_override_font_sizes/normal_font_size = 24
 text = "Player:"
 
 [node name="Enemy" type="RichTextLabel" parent="."]
 offset_left = 795.0
 offset_top = 25.0
-offset_right = 976.0
-offset_bottom = 68.0
+offset_right = 1089.0
+offset_bottom = 65.0
 theme_override_font_sizes/normal_font_size = 24
 text = "Enemy
 "
 
-[node name="EnemyController" type="Node2D" parent="."]
-script = ExtResource("1_fsdyp")
+[node name="AttackQueue" type="RichTextLabel" parent="."]
+offset_left = 204.0
+offset_top = 550.0
+offset_right = 649.0
+offset_bottom = 590.0
+theme_override_font_sizes/normal_font_size = 24
+text = "No Parts Queued for Attack"
 
-[node name="PlayerController" type="Node2D" parent="."]
-script = ExtResource("2_2iocr")
-
-[node name="GameManager" type="Node2D" parent="."]
+[node name="GameManager" type="Node2D" parent="." node_paths=PackedStringArray("_player", "_enemy", "_playerText", "_attackQueueText", "_enemyText", "_tempCombatLog")]
 script = ExtResource("1_rfevd")
-
-[node name="CommandButton" type="OptionButton" parent="GameManager"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 32.0
-offset_top = 359.0
-offset_right = 310.0
-offset_bottom = 413.0
-grow_horizontal = 2
-grow_vertical = 2
-script = SubResource("GDScript_r0eeu")
+_player = NodePath("../PlayerController")
+_enemy = NodePath("../EnemyController")
+_playerText = NodePath("PlayerStats")
+_attackQueueText = NodePath("../AttackQueue")
+_enemyText = NodePath("EnemyStats")
+_tempCombatLog = NodePath("TempCombatLog")
 
 [node name="LeftArmButton" type="Button" parent="GameManager"]
 offset_left = 197.0
@@ -135,7 +99,6 @@ offset_bottom = 347.0
 theme_override_font_sizes/normal_font_size = 24
 text = "Test
 "
-script = SubResource("GDScript_7utf7")
 
 [node name="EnemyStats" type="RichTextLabel" parent="GameManager"]
 offset_left = 750.0
@@ -145,15 +108,18 @@ offset_bottom = 322.0
 theme_override_font_sizes/normal_font_size = 24
 text = "Test
 "
-script = SubResource("GDScript_7utf7")
 
-[node name="AttackQueue" type="RichTextLabel" parent="."]
-offset_left = 213.0
-offset_top = 542.0
-offset_right = 719.0
-offset_bottom = 591.0
-theme_override_font_sizes/normal_font_size = 24
-text = "No Parts Queued for Attack"
+[node name="TempCombatLog" type="RichTextLabel" parent="GameManager"]
+offset_left = 376.0
+offset_top = 37.0
+offset_right = 618.0
+offset_bottom = 421.0
+
+[node name="PlayerController" type="Node2D" parent="."]
+script = ExtResource("2_2iocr")
+
+[node name="EnemyController" type="Node2D" parent="."]
+script = ExtResource("1_fsdyp")
 
 [connection signal="button_down" from="GameManager/LeftArmButton" to="GameManager" method="_on_left_arm_button_button_down"]
 [connection signal="button_up" from="GameManager/LeftArmButton" to="GameManager" method="_on_left_arm_button_button_up"]
