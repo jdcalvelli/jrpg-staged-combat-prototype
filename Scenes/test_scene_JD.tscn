@@ -1,0 +1,130 @@
+[gd_scene load_steps=4 format=3 uid="uid://dt5ehr37lbe5x"]
+
+[ext_resource type="Script" path="res://Scripts/GameManager.gd" id="1_npetg"]
+[ext_resource type="Script" path="res://Scripts/Controllers/PlayerController.gd" id="2_yompn"]
+[ext_resource type="Script" path="res://Scripts/Controllers/EnemyController.gd" id="3_qonee"]
+
+[node name="TestScene" type="Node2D"]
+
+[node name="Player" type="RichTextLabel" parent="."]
+offset_left = 23.0
+offset_top = 25.0
+offset_right = 313.0
+offset_bottom = 65.0
+theme_override_font_sizes/normal_font_size = 24
+text = "Player:"
+
+[node name="Enemy" type="RichTextLabel" parent="."]
+offset_left = 795.0
+offset_top = 25.0
+offset_right = 1089.0
+offset_bottom = 65.0
+theme_override_font_sizes/normal_font_size = 24
+text = "Enemy
+"
+
+[node name="AttackQueue" type="RichTextLabel" parent="."]
+offset_left = 204.0
+offset_top = 550.0
+offset_right = 649.0
+offset_bottom = 590.0
+theme_override_font_sizes/normal_font_size = 24
+text = "No Parts Queued for Attack"
+
+[node name="GameManager" type="Node2D" parent="." node_paths=PackedStringArray("_player", "_enemy", "_playerText", "_attackQueueText", "_enemyText", "_tempCombatLog")]
+script = ExtResource("1_npetg")
+_player = NodePath("../PlayerController")
+_enemy = NodePath("../EnemyController")
+_playerText = NodePath("PlayerStats")
+_attackQueueText = NodePath("../AttackQueue")
+_enemyText = NodePath("EnemyStats")
+_tempCombatLog = NodePath("TempCombatLog")
+
+[node name="LeftArmButton" type="Button" parent="GameManager"]
+offset_left = 197.0
+offset_top = 447.0
+offset_right = 357.0
+offset_bottom = 508.0
+theme_override_font_sizes/font_size = 24
+text = "Left Arm
+"
+
+[node name="RightArmButton" type="Button" parent="GameManager"]
+offset_left = 375.0
+offset_top = 447.0
+offset_right = 535.0
+offset_bottom = 508.0
+theme_override_font_sizes/font_size = 24
+text = "Right Arm"
+
+[node name="LeftLegButton" type="Button" parent="GameManager"]
+offset_left = 553.0
+offset_top = 447.0
+offset_right = 713.0
+offset_bottom = 508.0
+theme_override_font_sizes/font_size = 24
+text = "Left Leg
+"
+
+[node name="RightLegButton" type="Button" parent="GameManager"]
+offset_left = 731.0
+offset_top = 447.0
+offset_right = 891.0
+offset_bottom = 508.0
+theme_override_font_sizes/font_size = 24
+text = "Right Leg
+"
+
+[node name="ClearButton" type="Button" parent="GameManager"]
+offset_left = 743.0
+offset_top = 533.0
+offset_right = 912.0
+offset_bottom = 596.0
+theme_override_font_sizes/font_size = 24
+text = "Clear Queue"
+
+[node name="ConfirmAttack" type="Button" parent="GameManager"]
+offset_left = 927.0
+offset_top = 533.0
+offset_right = 1096.0
+offset_bottom = 596.0
+theme_override_font_sizes/font_size = 24
+text = "Confirm Attacks"
+
+[node name="PlayerStats" type="RichTextLabel" parent="GameManager"]
+offset_left = 32.0
+offset_top = 85.0
+offset_right = 315.0
+offset_bottom = 347.0
+theme_override_font_sizes/normal_font_size = 24
+text = "Test
+"
+
+[node name="EnemyStats" type="RichTextLabel" parent="GameManager"]
+offset_left = 750.0
+offset_top = 60.0
+offset_right = 1033.0
+offset_bottom = 322.0
+theme_override_font_sizes/normal_font_size = 24
+text = "Test
+"
+
+[node name="TempCombatLog" type="RichTextLabel" parent="GameManager"]
+offset_left = 376.0
+offset_top = 37.0
+offset_right = 618.0
+offset_bottom = 421.0
+
+[node name="PlayerController" type="Node2D" parent="."]
+script = ExtResource("2_yompn")
+
+[node name="EnemyController" type="Node2D" parent="."]
+script = ExtResource("3_qonee")
+
+[connection signal="button_down" from="GameManager/LeftArmButton" to="GameManager" method="_on_left_arm_button_button_down"]
+[connection signal="button_up" from="GameManager/LeftArmButton" to="GameManager" method="_on_left_arm_button_button_up"]
+[connection signal="button_down" from="GameManager/RightArmButton" to="GameManager" method="_on_right_arm_button_button_down"]
+[connection signal="button_down" from="GameManager/LeftLegButton" to="GameManager" method="_on_left_leg_button_button_down"]
+[connection signal="button_down" from="GameManager/RightLegButton" to="GameManager" method="_on_right_leg_button_button_down"]
+[connection signal="button_down" from="GameManager/ClearButton" to="GameManager" method="_on_clear_button_button_down"]
+[connection signal="button_down" from="GameManager/ConfirmAttack" to="GameManager" method="_on_confirm_attack_button_down"]
