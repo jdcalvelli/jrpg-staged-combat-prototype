@@ -23,8 +23,8 @@ func _init(_mechParts: Dictionary):
 	# with mech parts in it
 	mechParts = _mechParts
 
-func Attack(part: MechPart, opponent: Mech, partToAttack: MechPart):
+func Attack(part: MechPart, opponent: Mech, partToAttack: MechPart, modifier):
 	# need to deal damage to mech in general
-	partToAttack.partHealth -= part.partDamage
+	partToAttack.partHealth -= (part.partDamage * modifier)
 	
 # THIS HAS THE DAMAGE FUNCTION

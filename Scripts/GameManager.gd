@@ -59,9 +59,12 @@ func _process(delta):
 		+ ("\nRight Arm Health: %s" % _enemyMech.mechParts["rightArm"].partHealth) \
 		+ ("\nLeft Leg Health: %s" % _enemyMech.mechParts["leftLeg"].partHealth) \
 		+ ("\nRight Leg Health: %s") % _enemyMech.mechParts["rightLeg"].partHealth
-		
+	
 	_deactivatePlayerLimbs()
 	_deactivateEnemyLimbs()
+	
+	if _player.AttackSequence.size() >= 2:
+		_player.CheckCombo()
 	pass
 	
 func _deactivatePlayerLimbs():
@@ -120,6 +123,27 @@ func _change_state(new_state: int):
 			_player.ActionPoints = 2 #sets player action points.
 			_player.AttackSequence.clear()
 			_player.TotalDamage.clear()
+			_player.target = null
+			_player.isGrabbing = false
+			_player.isCrit = false
+			_player.isAOE = false
+			_update_queue()
+			_update_target()
+			
+			match _enemyDead:
+				true:
+					_change_state(States.END)
+				false:
+					pass
+			pass
+			
+			match _playerDead:
+				true:
+					_change_state(States.END)
+				false:
+					pass
+			pass
+			
 			print("Start State")
 			_change_state(States.PLAYER_TURN)
 			pass
@@ -131,7 +155,21 @@ func _change_state(new_state: int):
 		States.PLAYER_CALC:
 			print("Calculating Player Combo/Damage")
 			_tempCombatLog.text += "Calculating Player Combo/Damage \n"
-			_player.ResolveAttackSequence(_enemyMech, _tempCombatLog)
+
+			if _player.isGrabbing:
+				_player.ResolveAttackSequence(_enemyMech, _tempCombatLog, 0.5)
+				_change_state(States.START) #skips the enemy turn. 
+				return
+			elif  _player.isCrit:
+				_player.ResolveAttackSequence(_enemyMech, _tempCombatLog, 2)
+				pass
+			elif _player.isAOE:
+				print("aoe")
+				_player.ResolveAOEAttack(_enemyMech, _tempCombatLog)
+				pass
+			else:
+				_player.ResolveAttackSequence(_enemyMech, _tempCombatLog, 1)
+			
 			match _enemyDead:
 				true:
 					_change_state(States.END)
@@ -141,8 +179,9 @@ func _change_state(new_state: int):
 		States.ENEMY_TURN:
 			print("Start Enemy Turn")
 			_player.AttackSequence.clear()
-			_update_queue()
+			_player.TotalDamage.clear()
 			_player.target = null
+			_update_queue()
 			_update_target()
 			_tempCombatLog.text += "Start Enemy Turn \n"
 			_enemy.DetermineRandomAttackTarget(_playerMech)
@@ -197,8 +236,8 @@ func _on_confirm_attack_button_down():
 	if _state != States.PLAYER_TURN: return
 	if _player.ActionPoints > 0: return #These checks just make sure that if the state is not player turn and action points are greater than zero we don't do anything on press. 
 	if (_player.target == null): return
-	_state += 1 #ups the state count
-	_change_state(_state) #changes state to player calc state.
+	_player.CheckCombo() #ups the state count
+	_change_state(States.PLAYER_CALC) #changes state to player calc state.
 
 
 func _prep_attack_for_queue(_partname: String, _part: MechPart):

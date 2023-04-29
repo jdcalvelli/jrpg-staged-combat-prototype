@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bf0nwrvif6rpb" path="res://Assets/icon.svg" id="4_emd3o"]
 
 [node name="TestScene" type="Node2D"]
+position = Vector2(-1, 0)
 
 [node name="Player" type="RichTextLabel" parent="."]
 offset_left = 23.0
@@ -16,9 +17,9 @@ theme_override_font_sizes/normal_font_size = 24
 text = "Player:"
 
 [node name="Enemy" type="RichTextLabel" parent="."]
-offset_left = 555.0
+offset_left = 466.0
 offset_top = 25.0
-offset_right = 849.0
+offset_right = 760.0
 offset_bottom = 65.0
 theme_override_font_sizes/normal_font_size = 24
 text = "Enemy
@@ -169,19 +170,19 @@ text = "Test
 "
 
 [node name="EnemyStats" type="RichTextLabel" parent="GameManager"]
-offset_left = 436.0
-offset_top = 64.0
-offset_right = 719.0
-offset_bottom = 326.0
+offset_left = 467.0
+offset_top = 66.0
+offset_right = 750.0
+offset_bottom = 328.0
 theme_override_font_sizes/normal_font_size = 24
 text = "Test
 "
 
 [node name="TempCombatLog" type="RichTextLabel" parent="GameManager"]
-offset_left = 376.0
-offset_top = 37.0
-offset_right = 618.0
-offset_bottom = 421.0
+offset_left = 201.0
+offset_top = 328.0
+offset_right = 755.0
+offset_bottom = 433.0
 
 [node name="PlayerController" type="Node2D" parent="."]
 script = ExtResource("2_2iocr")

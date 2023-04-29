@@ -5,11 +5,11 @@ extends Node2D
 # variables for player mech
 var EnemyMechModel: Mech = Mech.new(
 			{
-			"body": MechPart.new("body",0, 50),
-			"leftArm": MechPart.new("Left Arm", 5, 8),
-			"rightArm": MechPart.new("Right Arm", 5, 8),
-			"leftLeg": MechPart.new("Left Leg", 6, 4),
-			"rightLeg": MechPart.new("Right Leg", 6, 4),
+			"body": MechPart.new("body",0, 100),
+			"leftArm": MechPart.new("Left Arm", 5, 30),
+			"rightArm": MechPart.new("Right Arm", 5, 30),
+			"leftLeg": MechPart.new("Left Leg", 6, 30),
+			"rightLeg": MechPart.new("Right Leg", 6, 30),
 		})
 # number of possible actions
 var ActionPoints: int = 2
@@ -27,7 +27,7 @@ func SequencePartAttack(part: MechPart):
 	
 func ResolveAttackSequence(opponent: Mech, tempCombatLog: RichTextLabel):
 	for part in AttackSequence:
-		EnemyMechModel.Attack(part, opponent, target)
+		EnemyMechModel.Attack(part, opponent, target, 1)
 		
 func DetermineRandomAttackSequence():
 	for n in ActionPoints:
