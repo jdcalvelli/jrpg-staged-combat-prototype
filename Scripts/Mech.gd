@@ -7,7 +7,7 @@ class_name Mech
 
 # instance variables
 # colon for static typing
-var mechHealth: int
+#var mechHealth: int
 
 # mech parts object
 # probably a more type-safe way to do this
@@ -15,16 +15,16 @@ var mechParts = {}
 var mechElements = {}
 
 # constructor
-func _init(_mechHealth: int, _mechParts: Dictionary):
+func _init(_mechParts: Dictionary):
 	# setting instance mech heath at construction
-	mechHealth = _mechHealth
+	#mechHealth = _mechHealth
 	# setting instance mech parts at construction
 	# at construction time, we need to make sure that we give a dict
 	# with mech parts in it
 	mechParts = _mechParts
 
-func Attack(part: MechPart, opponent: Mech):
+func Attack(part: MechPart, opponent: Mech, partToAttack: MechPart):
 	# need to deal damage to mech in general
-	opponent.mechHealth -= part.partDamage
+	partToAttack.partHealth -= part.partDamage
 	
 # THIS HAS THE DAMAGE FUNCTION

@@ -3,8 +3,9 @@ class_name PlayerController
 extends Node2D
 
 # variables for player mech
-var PlayerMechModel: Mech = Mech.new(50,
+var PlayerMechModel: Mech = Mech.new(
 			{
+			"body": MechPart.new("body", 0, 50),
 			"leftArm": MechPart.new("Left Arm", 5, 8),
 			"rightArm": MechPart.new("Right Arm", 5, 8),
 			"leftLeg": MechPart.new("Left Leg", 6, 4),
@@ -12,6 +13,7 @@ var PlayerMechModel: Mech = Mech.new(50,
 		})
 # number of possible actions
 var ActionPoints: int = 2
+var target: MechPart
 # sequence of actions
 var AttackSequence: Array
 var TotalDamage: Array
@@ -34,5 +36,5 @@ func UnsequencePartAttack(part: MechPart):
 	
 func ResolveAttackSequence(opponent: Mech, tempCombatLog: RichTextLabel):
 	for part in AttackSequence:
-		PlayerMechModel.Attack(part, opponent)
+		PlayerMechModel.Attack(part, opponent, target)
 		print("attack did %s damage with %s" % [part.partDamage, part.partName])

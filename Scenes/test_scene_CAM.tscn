@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://b1tqyridpiwdf"]
+[gd_scene load_steps=5 format=3 uid="uid://b1tqyridpiwdf"]
 
 [ext_resource type="Script" path="res://Scripts/Controllers/EnemyController.gd" id="1_fsdyp"]
 [ext_resource type="Script" path="res://Scripts/GameManager.gd" id="1_rfevd"]
 [ext_resource type="Script" path="res://Scripts/Controllers/PlayerController.gd" id="2_2iocr"]
+[ext_resource type="Texture2D" uid="uid://bf0nwrvif6rpb" path="res://Assets/icon.svg" id="4_emd3o"]
 
 [node name="TestScene" type="Node2D"]
 
@@ -15,9 +16,9 @@ theme_override_font_sizes/normal_font_size = 24
 text = "Player:"
 
 [node name="Enemy" type="RichTextLabel" parent="."]
-offset_left = 795.0
+offset_left = 555.0
 offset_top = 25.0
-offset_right = 1089.0
+offset_right = 849.0
 offset_bottom = 65.0
 theme_override_font_sizes/normal_font_size = 24
 text = "Enemy
@@ -25,20 +26,83 @@ text = "Enemy
 
 [node name="AttackQueue" type="RichTextLabel" parent="."]
 offset_left = 204.0
-offset_top = 550.0
+offset_top = 518.0
 offset_right = 649.0
-offset_bottom = 590.0
+offset_bottom = 558.0
 theme_override_font_sizes/normal_font_size = 24
 text = "No Parts Queued for Attack"
 
-[node name="GameManager" type="Node2D" parent="." node_paths=PackedStringArray("_player", "_enemy", "_playerText", "_attackQueueText", "_enemyText", "_tempCombatLog")]
+[node name="TargetQueue" type="RichTextLabel" parent="."]
+offset_left = 202.0
+offset_top = 566.0
+offset_right = 647.0
+offset_bottom = 606.0
+theme_override_font_sizes/normal_font_size = 24
+text = "No Target."
+
+[node name="EnemyBody" type="Button" parent="."]
+offset_left = 842.0
+offset_top = 138.0
+offset_right = 974.0
+offset_bottom = 269.0
+theme_override_font_sizes/font_size = 24
+text = "Body
+"
+
+[node name="EnemyRightArm" type="Button" parent="."]
+offset_left = 820.0
+offset_top = 138.0
+offset_right = 961.0
+offset_bottom = 183.0
+rotation = 1.5708
+theme_override_font_sizes/font_size = 24
+text = "Right Arm
+"
+
+[node name="EnemyLeftArm" type="Button" parent="."]
+offset_left = 1047.0
+offset_top = 138.0
+offset_right = 1188.0
+offset_bottom = 183.0
+rotation = 1.5708
+theme_override_font_sizes/font_size = 24
+text = "Left Arm
+"
+
+[node name="EnemyRightLeg" type="Button" parent="."]
+offset_left = 885.0
+offset_top = 282.0
+offset_right = 993.0
+offset_bottom = 327.0
+rotation = 1.5708
+theme_override_font_sizes/font_size = 24
+text = "Right Leg
+"
+
+[node name="EnemyLeftLeg" type="Button" parent="."]
+offset_left = 978.0
+offset_top = 282.0
+offset_right = 1086.0
+offset_bottom = 327.0
+rotation = 1.5708
+theme_override_font_sizes/font_size = 24
+text = "Right Leg
+"
+
+[node name="GameManager" type="Node2D" parent="." node_paths=PackedStringArray("_player", "_enemy", "_playerText", "_attackQueueText", "_enemyText", "_enemyBody", "_enemyLeftArm", "_enenmyRightArm", "_enemyLeftLeg", "_enemyRightLeg", "_tempCombatLog", "_targetText")]
 script = ExtResource("1_rfevd")
 _player = NodePath("../PlayerController")
 _enemy = NodePath("../EnemyController")
 _playerText = NodePath("PlayerStats")
 _attackQueueText = NodePath("../AttackQueue")
 _enemyText = NodePath("EnemyStats")
+_enemyBody = NodePath("../EnemyBody")
+_enemyLeftArm = NodePath("../EnemyLeftArm")
+_enenmyRightArm = NodePath("../EnemyRightArm")
+_enemyLeftLeg = NodePath("../EnemyLeftLeg")
+_enemyRightLeg = NodePath("../EnemyRightLeg")
 _tempCombatLog = NodePath("TempCombatLog")
+_targetText = NodePath("../TargetQueue")
 
 [node name="LeftArmButton" type="Button" parent="GameManager"]
 offset_left = 197.0
@@ -101,10 +165,10 @@ text = "Test
 "
 
 [node name="EnemyStats" type="RichTextLabel" parent="GameManager"]
-offset_left = 750.0
-offset_top = 60.0
-offset_right = 1033.0
-offset_bottom = 322.0
+offset_left = 436.0
+offset_top = 64.0
+offset_right = 719.0
+offset_bottom = 326.0
 theme_override_font_sizes/normal_font_size = 24
 text = "Test
 "
@@ -121,6 +185,15 @@ script = ExtResource("2_2iocr")
 [node name="EnemyController" type="Node2D" parent="."]
 script = ExtResource("1_fsdyp")
 
+[node name="Icon" type="Sprite2D" parent="."]
+position = Vector2(908, 69)
+texture = ExtResource("4_emd3o")
+
+[connection signal="button_down" from="EnemyBody" to="GameManager" method="_on_enemy_body_button_down"]
+[connection signal="button_down" from="EnemyRightArm" to="GameManager" method="_on_enemy_right_arm_button_down"]
+[connection signal="button_down" from="EnemyLeftArm" to="GameManager" method="_on_enemy_left_arm_button_down"]
+[connection signal="button_down" from="EnemyRightLeg" to="GameManager" method="_on_enemy_right_leg_button_down"]
+[connection signal="button_down" from="EnemyLeftLeg" to="GameManager" method="_on_enemy_left_leg_button_down"]
 [connection signal="button_down" from="GameManager/LeftArmButton" to="GameManager" method="_on_left_arm_button_button_down"]
 [connection signal="button_up" from="GameManager/LeftArmButton" to="GameManager" method="_on_left_arm_button_button_up"]
 [connection signal="button_down" from="GameManager/RightArmButton" to="GameManager" method="_on_right_arm_button_button_down"]
