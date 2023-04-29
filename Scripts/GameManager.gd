@@ -10,12 +10,20 @@ var _enemyMech: Mech #reference to the enemy mech class
 @export var _attackQueueText: RichTextLabel #reference to attack queue text. 
 @export var _enemyText: RichTextLabel
 
+@export var _playerLeftArm: Button
+@export var _playerRightArm: Button
+@export var _playerLeftLeg: Button
+@export var _playerRightLeg: Button
+
 #References to the Enemy Buttons so we can deactivate them when the part is dead. 
 @export var _enemyBody: Button
 @export var _enemyLeftArm: Button
 @export var _enemyRightArm: Button
 @export var _enemyLeftLeg: Button
 @export var _enemyRightLeg: Button
+
+var _playerDead: bool = false
+var _enemyDead: bool = false
 
 # I FIGURED OUT HOW TO DO SERIALIZED FIELD AHAHAHAHAHA
 # guess who is never using get node again lmao
@@ -52,15 +60,36 @@ func _process(delta):
 		+ ("\nLeft Leg Health: %s" % _enemyMech.mechParts["leftLeg"].partHealth) \
 		+ ("\nRight Leg Health: %s") % _enemyMech.mechParts["rightLeg"].partHealth
 		
+	_deactivatePlayerLimbs()
 	_deactivateEnemyLimbs()
 	pass
+	
+func _deactivatePlayerLimbs():
+	for part in _playerMech.mechParts:
+		if _playerMech.mechParts[part].partHealth <= 0:
+			match _playerMech.mechParts[part].partName:
+				"body":
+					_playerDead = true;
+					pass
+				"Left Arm":
+					_playerLeftArm.visible = false
+					pass
+				"Right Arm":
+					_playerRightArm.visible = false
+					pass
+				"Left Leg":
+					_playerLeftLeg.visible = false
+					pass
+				"Right Leg":
+					_playerRightLeg.visible = false
+					pass
 
 func _deactivateEnemyLimbs():
 	for part in _enemyMech.mechParts:
 		if _enemyMech.mechParts[part].partHealth <= 0:
 			match _enemyMech.mechParts[part].partName:
 				"body":
-					_enemyBody.visible = false
+					_enemyDead = true;
 					pass
 				"Right Arm":
 					_enemyRightArm.visible = false
@@ -68,7 +97,7 @@ func _deactivateEnemyLimbs():
 					_enemyLeftArm.visible = false
 					pass
 				"Right Leg":
-					_enemyRightLeg.visibe = false
+					_enemyRightLeg.visible = false
 					pass
 				"Left Leg":
 					_enemyLeftLeg.visible = false
@@ -92,18 +121,22 @@ func _change_state(new_state: int):
 			_player.AttackSequence.clear()
 			_player.TotalDamage.clear()
 			print("Start State")
-			_state += 1
-			_change_state(_state)
+			_change_state(States.PLAYER_TURN)
 			pass
 		States.PLAYER_TURN:
 			print("Start Player Turn")
 			_tempCombatLog.text += "Start Player Turn \n"
+			_check_player_limbs()
 			pass
 		States.PLAYER_CALC:
 			print("Calculating Player Combo/Damage")
 			_tempCombatLog.text += "Calculating Player Combo/Damage \n"
 			_player.ResolveAttackSequence(_enemyMech, _tempCombatLog)
-			_change_state(States.ENEMY_TURN)
+			match _enemyDead:
+				true:
+					_change_state(States.END)
+				false:
+					_change_state(States.ENEMY_TURN)
 			pass
 		States.ENEMY_TURN:
 			print("Start Enemy Turn")
@@ -112,6 +145,7 @@ func _change_state(new_state: int):
 			_player.target = null
 			_update_target()
 			_tempCombatLog.text += "Start Enemy Turn \n"
+			_enemy.DetermineRandomAttackTarget(_playerMech)
 			_enemy.DetermineRandomAttackSequence()
 			_change_state(States.ENEMY_CALC)
 			pass
@@ -119,11 +153,14 @@ func _change_state(new_state: int):
 			print("Calculating Enemy Damage")
 			_tempCombatLog.text += "Calculating Enemy Damage \n"
 			_enemy.ResolveAttackSequence(_playerMech, _tempCombatLog)
-			_change_state(States.END)
+			match _playerDead:
+				true:
+					_change_state(States.END)
+				false:
+					_change_state(States.START)
 			pass
 		States.END:
 			print("End of Combat")
-			_change_state(States.START)
 			_tempCombatLog.text += "End of Combat (for now) \n"
 			pass
 	pass
@@ -179,6 +216,12 @@ func _update_queue():
 		_attackQueueText.text = ("%s " % _player.AttackSequence[0].partName) + ("and ") + ("%s " % _player.AttackSequence[1].partName) + ("are queued.")
 		print(_player.AttackSequence[1])
 
+func _check_player_limbs():
+	if (_playerLeftArm.visible == false && _playerRightArm.visible == false && _playerLeftLeg.visible == false && _playerRightLeg.visible == false):
+		_playerDead = true
+		_change_state(States.END)
+	else:
+		return;
 
 
 

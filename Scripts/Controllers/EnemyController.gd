@@ -13,7 +13,7 @@ var EnemyMechModel: Mech = Mech.new(
 		})
 # number of possible actions
 var ActionPoints: int = 2
-var target: MechPart = MechPart.new("body", 100, 100)
+var target: MechPart
 # sequence of actions
 var AttackSequence: Array
 var TotalDamage: Array
@@ -30,17 +30,57 @@ func ResolveAttackSequence(opponent: Mech, tempCombatLog: RichTextLabel):
 		EnemyMechModel.Attack(part, opponent, target)
 		
 func DetermineRandomAttackSequence():
-	
 	for n in ActionPoints:
 		match randi() % 4:
 			0:
-				SequencePartAttack(EnemyMechModel.mechParts["leftLeg"])
+				if EnemyMechModel.mechParts["leftLeg"].partHealth <= 0:
+					DetermineRandomAttackSequence()
+				else:
+					SequencePartAttack(EnemyMechModel.mechParts["leftLeg"])
 			1:
-				pass
-				SequencePartAttack(EnemyMechModel.mechParts["rightLeg"])
+				if EnemyMechModel.mechParts["rightLeg"].partHealth <= 0:
+					DetermineRandomAttackSequence()
+				else:
+					SequencePartAttack(EnemyMechModel.mechParts["rightLeg"])
 			2:
-				pass
-				SequencePartAttack(EnemyMechModel.mechParts["leftArm"])
+				if EnemyMechModel.mechParts["leftArm"].partHealth <= 0:
+					DetermineRandomAttackSequence()
+				else:
+					SequencePartAttack(EnemyMechModel.mechParts["leftArm"])
 			3:
-				pass
-				SequencePartAttack(EnemyMechModel.mechParts["rightArm"])
+				if EnemyMechModel.mechParts["rightArm"].partHealth <= 0:
+					DetermineRandomAttackSequence()
+				else:
+					SequencePartAttack(EnemyMechModel.mechParts["rightArm"])
+
+func DetermineRandomAttackTarget(player : Mech):
+	
+	if player.mechParts["body"].partHealth <= 0: 
+		return;
+	
+	match randi() % 5:
+		0:
+			if player.mechParts["leftLeg"].partHealth > 0:
+				target = player.mechParts["leftLeg"]
+			else:
+				DetermineRandomAttackTarget(player)
+		1:
+			if player.mechParts["rightLeg"].partHealth > 0:
+				target = player.mechParts["rightLeg"]
+			else:
+				DetermineRandomAttackTarget(player)
+		2:
+			if player.mechParts["leftArm"].partHealth > 0:
+				target = player.mechParts["leftArm"]
+			else:
+				DetermineRandomAttackTarget(player)
+		3:
+			if player.mechParts["rightArm"].partHealth > 0:
+				target = player.mechParts["rightArm"]
+			else:
+				DetermineRandomAttackTarget(player)
+		4:
+			if player.mechParts["body"].partHealth > 0:
+				target = player.mechParts["body"]
+			else:
+				DetermineRandomAttackTarget(player)
