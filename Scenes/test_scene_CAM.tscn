@@ -89,7 +89,7 @@ theme_override_font_sizes/font_size = 24
 text = "Right Leg
 "
 
-[node name="GameManager" type="Node2D" parent="." node_paths=PackedStringArray("_player", "_enemy", "_playerText", "_attackQueueText", "_enemyText", "_enemyBody", "_enemyLeftArm", "_enenmyRightArm", "_enemyLeftLeg", "_enemyRightLeg", "_tempCombatLog", "_targetText")]
+[node name="GameManager" type="Node2D" parent="." node_paths=PackedStringArray("_player", "_enemy", "_playerText", "_attackQueueText", "_enemyText", "_enemyBody", "_enemyLeftArm", "_enemyRightArm", "_enemyLeftLeg", "_enemyRightLeg", "_tempCombatLog", "_targetText")]
 script = ExtResource("1_rfevd")
 _player = NodePath("../PlayerController")
 _enemy = NodePath("../EnemyController")
@@ -98,7 +98,7 @@ _attackQueueText = NodePath("../AttackQueue")
 _enemyText = NodePath("EnemyStats")
 _enemyBody = NodePath("../EnemyBody")
 _enemyLeftArm = NodePath("../EnemyLeftArm")
-_enenmyRightArm = NodePath("../EnemyRightArm")
+_enemyRightArm = NodePath("../EnemyRightArm")
 _enemyLeftLeg = NodePath("../EnemyLeftLeg")
 _enemyRightLeg = NodePath("../EnemyRightLeg")
 _tempCombatLog = NodePath("TempCombatLog")

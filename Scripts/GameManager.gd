@@ -13,7 +13,7 @@ var _enemyMech: Mech #reference to the enemy mech class
 #References to the Enemy Buttons so we can deactivate them when the part is dead. 
 @export var _enemyBody: Button
 @export var _enemyLeftArm: Button
-@export var _enenmyRightArm: Button
+@export var _enemyRightArm: Button
 @export var _enemyLeftLeg: Button
 @export var _enemyRightLeg: Button
 
@@ -51,7 +51,29 @@ func _process(delta):
 		+ ("\nRight Arm Health: %s" % _enemyMech.mechParts["rightArm"].partHealth) \
 		+ ("\nLeft Leg Health: %s" % _enemyMech.mechParts["leftLeg"].partHealth) \
 		+ ("\nRight Leg Health: %s") % _enemyMech.mechParts["rightLeg"].partHealth
+		
+	_deactivateEnemyLimbs()
 	pass
+
+func _deactivateEnemyLimbs():
+	for part in _enemyMech.mechParts:
+		if _enemyMech.mechParts[part].partHealth <= 0:
+			match _enemyMech.mechParts[part].partName:
+				"body":
+					_enemyBody.visible = false
+					pass
+				"Right Arm":
+					_enemyRightArm.visible = false
+				"Left Arm":
+					_enemyLeftArm.visible = false
+					pass
+				"Right Leg":
+					_enemyRightLeg.visibe = false
+					pass
+				"Left Leg":
+					_enemyLeftLeg.visible = false
+					pass
+		
 
 func _transition_to_player_calc():
 	if _state != States.PLAYER_TURN: return
@@ -101,6 +123,7 @@ func _change_state(new_state: int):
 			pass
 		States.END:
 			print("End of Combat")
+			_change_state(States.START)
 			_tempCombatLog.text += "End of Combat (for now) \n"
 			pass
 	pass
