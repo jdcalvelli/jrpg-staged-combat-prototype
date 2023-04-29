@@ -12,3 +12,5 @@ func _init(_partName: String, _partDamage: int, _partHealth: int):
 	partName = _partName
 	partDamage = _partDamage
 	partHealth = _partHealth
+
+# THIS IS JUST A DATA CLASS FOR THE MECH PARTS

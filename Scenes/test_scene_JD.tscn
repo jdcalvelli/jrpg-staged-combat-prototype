@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://Scripts/Controllers/PlayerController.gd" id="2_yompn"]
 [ext_resource type="Script" path="res://Scripts/Controllers/EnemyController.gd" id="3_qonee"]
 
-[node name="TestScene" type="Node2D"]
+[node name="JD" type="Node2D"]
 
 [node name="Player" type="RichTextLabel" parent="."]
 offset_left = 23.0

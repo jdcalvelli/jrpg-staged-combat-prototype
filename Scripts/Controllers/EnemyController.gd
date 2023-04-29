@@ -3,7 +3,7 @@ class_name EnemyController
 extends Node2D
 
 # variables for player mech
-var EnemyMechModel: Mech = Mech.new(10,
+var EnemyMechModel: Mech = Mech.new(50,
 			{
 			"leftArm": MechPart.new("Left Arm", 5, 8),
 			"rightArm": MechPart.new("Right Arm", 5, 8),
@@ -23,9 +23,9 @@ func SequencePartAttack(part: MechPart):
 		print(AttackSequence.size())
 		ActionPoints -= 1
 	
-func ResolveAttackSequence(tempCombatLog: RichTextLabel):
+func ResolveAttackSequence(opponent: Mech, tempCombatLog: RichTextLabel):
 	for part in AttackSequence:
-		EnemyMechModel.Attack(part, tempCombatLog)
+		EnemyMechModel.Attack(part, opponent)
 		
 func DetermineRandomAttackSequence():
 	

@@ -28,8 +28,10 @@ func _ready():
 	
 	_player.AttackSequence.clear()
 	_change_state(States.START)
-	
-	#Player Stats Display
+
+func _process(delta):
+	#_transition_to_player_calc()
+		#Player Stats Display
 	_playerText.text = ("Total Health is %s" % _playerMech.mechHealth) \
 		+ ("\nLeft Arm Health: %s" % _playerMech.mechParts["leftArm"].partHealth) \
 		+ ("\nRight Arm Health: %s" % _playerMech.mechParts["rightArm"].partHealth) \
@@ -41,9 +43,6 @@ func _ready():
 		+ ("\nRight Arm Health: %s" % _enemyMech.mechParts["rightArm"].partHealth) \
 		+ ("\nLeft Leg Health: %s" % _enemyMech.mechParts["leftLeg"].partHealth) \
 		+ ("\nRight Leg Health: %s") % _enemyMech.mechParts["rightLeg"].partHealth
-
-func _process(delta):
-	#_transition_to_player_calc()
 	pass
 
 func _transition_to_player_calc():
@@ -73,9 +72,7 @@ func _change_state(new_state: int):
 		States.PLAYER_CALC:
 			print("Calculating Player Combo/Damage")
 			_tempCombatLog.text += "Calculating Player Combo/Damage \n"
-			_playerDamage = _player.TotalDamage[0] + _player.TotalDamage[1] #takes both values in damage array and adds them togehter.
-			print("player deals %s " % _playerDamage + ("damage. Combo TBD"))
-			_tempCombatLog.text += "player deals %s damage. Combo TBD. \n" % _playerDamage
+			_player.ResolveAttackSequence(_enemyMech, _tempCombatLog)
 			_change_state(States.ENEMY_TURN)
 			pass
 		States.ENEMY_TURN:
@@ -87,7 +84,7 @@ func _change_state(new_state: int):
 		States.ENEMY_CALC:
 			print("Calculating Enemy Damage")
 			_tempCombatLog.text += "Calculating Enemy Damage \n"
-			_enemy.ResolveAttackSequence(_tempCombatLog)
+			_enemy.ResolveAttackSequence(_playerMech, _tempCombatLog)
 			_change_state(States.END)
 			pass
 		States.END:
@@ -138,10 +135,10 @@ func _update_queue():
 	if _player.AttackSequence.size() <= 0: #if there are no attacks in the queue;
 		_attackQueueText.text = "No Attacks Queued"
 	if _player.AttackSequence.size() > 0 && _player.AttackSequence.size() < 2:
-		_attackQueueText.text = ("%s " % _player.AttackSequence[0]) + ("is queued")
+		_attackQueueText.text = ("%s " % _player.AttackSequence[0].partName) + ("is queued")
 		print(_player.AttackSequence[0])
 	if _player.AttackSequence.size() == 2:
-		_attackQueueText.text = ("%s " % _player.AttackSequence[0]) + ("and ") + ("%s " % _player.AttackSequence[1]) + ("are queued.")
+		_attackQueueText.text = ("%s " % _player.AttackSequence[0].partName) + ("and ") + ("%s " % _player.AttackSequence[1].partName) + ("are queued.")
 		print(_player.AttackSequence[1])
 
 
